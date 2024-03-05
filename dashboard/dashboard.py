@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
 import streamlit as st
 
@@ -19,16 +20,23 @@ def create_daily_users_df(df):
     return daily_users_df
 
 def create_sum_weekly_user_df(df):
-    sum_weekly_user_df = df.groupby("weekly").count.sum().sort_values(ascending=False).reset_index()
+    sum_weekly_user_df = df.groupby("count").weekday.sum().sort_values(ascending=False).reset_index()
     return sum_weekly_user_df
 
 def create_sum_monthly_user_df(df):
-    sum_monthly_user_df = df.groupby("month").count.sum().sort_values(ascending=False).reset_index()
+    sum_monthly_user_df = df.groupby("count").month.sum().sort_values(ascending=False).reset_index()
     return sum_monthly_user_df
 
 
 # Load cleaned data
-day_df = pd.read_csv("day_data.csv")
+day_df = pd.read_csv(r"D:\Download\UI\FISIKA\S-VI\Bangkit\First Week of Course\Submission Dicoding\submission\dashboard\day_data.csv")
+
+datetime_columns = ["date"]
+day_df.sort_values(by="date", inplace=True)
+day_df.reset_index(inplace=True)
+
+for column in datetime_columns:
+    day_df[column] = pd.to_datetime(day_df[column])
 
 # Filter data
 min_date = day_df["date"].min()
@@ -38,7 +46,8 @@ with st.sidebar:
 
     # Mengambil start_date & end_date dari date_input
     start_date, end_date = st.date_input(
-        label='Rentang Waktu',min_value=min_date,
+        label='Rentang Waktu',
+        min_value=min_date,
         max_value=max_date,
         value=[min_date, max_date]
     )
@@ -119,7 +128,7 @@ fig_weekly = plt.figure(figsize=(10,5))
 
 sns.barplot(
     y="count",
-    x="weekly",
+    x="weekday",
     data=day_df,
     hue="month",
 )
