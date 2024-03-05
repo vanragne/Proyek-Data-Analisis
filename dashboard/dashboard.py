@@ -26,13 +26,6 @@ def create_sum_monthly_user_df(df):
     sum_monthly_user_df = df.groupby("month").count.sum().sort_values(ascending=False).reset_index()
     return sum_monthly_user_df
 
-def create_byweather_df(df):
-    byweather_df = df.groupby(by="weather").instant.nunique().reset_index()
-    byweather_df.rename(columns={
-        "instant": "customer_count"
-        }, inplace=True)
-    return byweather_df
-
 
 # Load cleaned data
 day_df = pd.read_csv("day_data.csv")
@@ -58,7 +51,6 @@ main_df = day_df[(day_df["date"] >= str(start_date)) &
 daily_users_df = create_daily_users_df(main_df)
 sum_weekly_user_df = create_sum_weekly_user_df(main_df)
 sum_monthly_user_df = create_sum_monthly_user_df(main_df)
-byweather_df = create_byweather_df(main_df)
 
 
 # plot number of daily users
@@ -140,7 +132,7 @@ plt.tick_params(axis='x', labelsize=12)
 
 st.pyplot(fig_weekly)
 
-# customer demographic
+# menampilkan pengguna bulanan
 st.subheader("Monthly User")
 
 fig_monthly = plt.figure(figsize=(10,5))
