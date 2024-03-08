@@ -8,5 +8,5 @@
   
 ## Run Streamlit App
   ```
-  streamlit run "\dashboard\dashboard.py"
+  streamlit run dashboard.py
   ```
