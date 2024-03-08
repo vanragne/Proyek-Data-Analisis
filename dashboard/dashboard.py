@@ -29,7 +29,7 @@ def create_sum_monthly_user_df(df):
 
 
 # Load cleaned data
-day_df = pd.read_csv(r"D:\Download\UI\FISIKA\S-VI\Bangkit\First Week of Course\Submission Dicoding\submission\dashboard\day_data.csv")
+day_df = pd.read_csv("./dashboard/day_data.csv")
 
 datetime_columns = ["date"]
 day_df.sort_values(by="date", inplace=True)
