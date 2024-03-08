@@ -7,9 +7,8 @@ import streamlit as st
 
 sns.set(style='dark')
 
-def load_dataframe(data):
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    filename = os.path.join(script_dir, "day_data.csv")
+script_dir = os.path.dirname(os.path.abspath(__file__))
+filename = os.path.join(script_dir, "day_data.csv")
 
 def create_daily_users_df(df):
     daily_users_df = df.resample(rule='D', on='date').agg({
