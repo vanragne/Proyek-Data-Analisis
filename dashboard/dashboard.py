@@ -8,7 +8,7 @@ import streamlit as st
 sns.set(style='dark')
 
 current_dir = os.getcwd()
-relative_path = '\dashboard\day_data.csv'
+relative_path = '/dashboard/day_data.csv'
 absolute_path = os.path.join(current_dir, relative_path)
 with open(absolute_path, 'r') as file:
     pass
