@@ -10,7 +10,6 @@ sns.set(style='dark')
 def load_dataframe(data):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     filename = os.path.join(script_dir, "day_data.csv")
-    return pd.read_csv(filename)
 
 def create_daily_users_df(df):
     daily_users_df = df.resample(rule='D', on='date').agg({
@@ -35,7 +34,7 @@ def create_sum_monthly_user_df(df):
 
 
 # Load cleaned data
-day_df = pd.read_csv('./dashboard/day_data.csv')
+day_df = pd.read_csv(filename)
 
 datetime_columns = ["date"]
 day_df.sort_values(by="date", inplace=True)
