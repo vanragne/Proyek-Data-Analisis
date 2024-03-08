@@ -7,11 +7,10 @@ import streamlit as st
 
 sns.set(style='dark')
 
-#current_dir = os.getcwd()
-#relative_path = '/dashboard/day_data.csv'
-#absolute_path = os.path.join(current_dir, relative_path)
-#with open(absolute_path, 'r') as file:
-    #pass
+def load_dataframe(data):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    filename = os.path.join(script_dir, "day_data.csv")
+    return pd.read_csv(filename)
 
 def create_daily_users_df(df):
     daily_users_df = df.resample(rule='D', on='date').agg({
