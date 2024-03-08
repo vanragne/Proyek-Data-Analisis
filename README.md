@@ -8,5 +8,5 @@
   
 ## Run Streamlit App
   ```
-  streamlit run "d:\Download\UI\FISIKA\S-VI\Bangkit\First Week of Course\Submission Dicoding\submission\dashboard\dashboard.py"
+  streamlit run "\dashboard\dashboard.py"
   ```
