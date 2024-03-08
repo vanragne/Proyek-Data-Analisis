@@ -84,9 +84,8 @@ fig, ax = plt.subplots(figsize=(16, 8))
 ax.plot(
     daily_users_df["date"],
     daily_users_df["bike"],
-    marker='o', 
     linewidth=2,
-    color="#90CAF9"
+    color="blue"
 )
 ax.tick_params(axis='y', labelsize=20)
 ax.tick_params(axis='x', labelsize=15)
@@ -130,17 +129,16 @@ st.subheader("Weekly User")
 
 fig_weekly = plt.figure(figsize=(10,5))
 
-sns.barplot(
+sns.boxplot(
     y="count",
     x="weekday",
     data=day_df,
-    hue="month",
+    hue="year"
 )
 
 plt.title("Tren Peminjaman Sepeda pada Hari tertentu", loc="center", fontsize=15)
 plt.ylabel(None)
-plt.xlabel("Hari")
-plt.xticks(rotation=45)
+plt.xlabel(None)
 plt.tick_params(axis='x', labelsize=12)
 
 st.pyplot(fig_weekly)
