@@ -74,12 +74,12 @@ with col1:
 
 with col2:
     total_bike = daily_users_df.bike.sum() 
-    st.metric("Total Bike", value=total_bike)
+    st.metric("Total Bike has been used", value=total_bike)
 
 fig, ax = plt.subplots(figsize=(16, 8))
 ax.plot(
     daily_users_df["date"],
-    daily_users_df["order_count"],
+    daily_users_df["bike"],
     marker='o', 
     linewidth=2,
     color="#90CAF9"
