@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -5,6 +6,12 @@ import seaborn as sns
 import streamlit as st
 
 sns.set(style='dark')
+
+current_dir = os.getcwd()
+relative_path = '\dashboard\day_data.csv'
+absolute_path = os.path.join(current_dir, relative_path)
+with open(absolute_path, 'r') as file:
+    pass
 
 def create_daily_users_df(df):
     daily_users_df = df.resample(rule='D', on='date').agg({
@@ -29,7 +36,7 @@ def create_sum_monthly_user_df(df):
 
 
 # Load cleaned data
-day_df = pd.read_csv("./dashboard/day_data.csv")
+day_df = pd.read_csv(absolute_path)
 
 datetime_columns = ["date"]
 day_df.sort_values(by="date", inplace=True)
