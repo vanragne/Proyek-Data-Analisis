@@ -135,24 +135,24 @@ sns.scatterplot(
     hue="season", 
 ) 
 
-# plt.title(None) 
+plt.title("") 
 plt.xlabel("Temperature (C)")
 plt.ylabel("Trends")
 
-## First tab layout 
+## First tab layout: Weekly & Monthly User
 tab1, tab2 = st.tabs(["Weekly", "Monthly"])
 
-# tab pengguna mingguan
+# tab weekly user
 with tab1:
     st.subheader("Weekly User")
     st.pyplot(fig_weekly)
 
-# tab pengguna bulanan
+# tab monthly user
 with tab2:
     st.subheader("Monthly User")
     st.pyplot(fig_monthly)
     
-## Second tab layout 
+## Second tab layout: Seasonal & Temperature
 tab_a, tab_b = st.tabs(["Seasonal", "Temp Relation"])
 
 # tab seasonal user
@@ -165,10 +165,10 @@ with tab_b:
     st.subheader("User vs Temp")
     st.pyplot(fig_temp)
 
-## Third tab layout
+## Third tab layout: Weather & Correlation Heatmap
 tab_w1, tab_w2 = st.tabs(["Scatter", "Correlation"])
 
-# Scatterplots: windspeed & humidity vs count
+# tab weather
 with tab_w1:
     st.subheader("Weather vs Bike Usage")
     fig_scatter, ax = plt.subplots(1, 2, figsize=(14,5))
@@ -181,7 +181,7 @@ with tab_w1:
 
     st.pyplot(fig_scatter)
 
-# Correlation heatmap
+# tab correlation heatmap
 with tab_w2:
     st.subheader("Correlation Heatmap")
     corr = main_df[["temp", "hum", "windspeed", "count"]].corr()
@@ -191,6 +191,7 @@ with tab_w2:
     st.pyplot(fig_corr)
 
 st.caption('Awaludin Ahmad Hafiz')
+
 
 
 
