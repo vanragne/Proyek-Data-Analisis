@@ -95,7 +95,7 @@ plt.tick_params(axis='x', labelsize=12)
 # Plot pengguna vs temperatur
 fig_temp = plt.figure(figsize=(10,6)) 
 sns.scatterplot( 
-    x="tempt", y="count", 
+    x="temp", y="count", 
     data=day_df, 
     hue="season", 
 ) 
@@ -157,3 +157,4 @@ with tab4:
     st.pyplot(fig_monthly)
 
 st.caption('Awaludin Ahmad Hafiz')
+
