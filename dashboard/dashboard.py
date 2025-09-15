@@ -79,7 +79,7 @@ fig_daily = px.line(
     daily_users_df,
     x="date", y="bike",
     title="Daily Bike Usage",
-    labels={"bike": "Number of Bikes", "date": "Date"}
+    labels={"bike": "Number of Bikes", "date": ""}
 )
 
 st.plotly_chart(fig_daily, use_container_width=True)
@@ -166,6 +166,7 @@ with tab_b:
     st.pyplot(fig_temp)
 
 st.caption('Awaludin Ahmad Hafiz')
+
 
 
 
