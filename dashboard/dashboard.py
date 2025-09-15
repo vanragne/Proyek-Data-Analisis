@@ -166,7 +166,7 @@ with tab_b:
     st.pyplot(fig_temp)
 
 ## Third tab layout: Weather & Correlation Heatmap
-tab_w1, tab_w2 = st.tabs(["Scatter", "Correlation"])
+tab_w1, tab_w2 = st.tabs(["Weather", "Correlation Heatmap"])
 
 # tab weather
 with tab_w1:
@@ -191,6 +191,7 @@ with tab_w2:
     st.pyplot(fig_corr)
 
 st.caption('Awaludin Ahmad Hafiz')
+
 
 
 
