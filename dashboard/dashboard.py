@@ -37,7 +37,7 @@ day_df = pd.read_csv(filename)
 
 datetime_columns = ["date"]
 day_df.sort_values(by="date", inplace=True)
-day_df.reset_index(inplace=True)
+day_df.reset_index(drop=True, inplace=True)
 
 for column in datetime_columns:
     day_df[column] = pd.to_datetime(day_df[column])
@@ -73,7 +73,7 @@ fig_daily = px.line(
     daily_users_df,
     x="date", y="bike",
     title="Daily Bike Usage",
-    labels={"bike": "Number of Bikes", "date": None}
+    labels={"bike": "Number of Bikes", "date": "Date"}
 )
 
 st.plotly_chart(fig_daily, use_container_width=True)
@@ -90,7 +90,7 @@ sns.lineplot(
 
 plt.title("Monthly Bike Usage per Year", loc="center", fontsize=15) 
 plt.ylabel("Bike Count") 
-plt.xlabel(None) 
+# plt.xlabel(None) 
 plt.xticks(rotation=45) 
 plt.tick_params(axis='x', labelsize=12) 
 
@@ -104,8 +104,8 @@ sns.boxplot(
 ) 
 
 plt.title("Bicycle Rental Trends During Specific Days", loc="center", fontsize=15) 
-plt.ylabel(None) 
-plt.xlabel(None) 
+# plt.ylabel(None) 
+# plt.xlabel(None) 
 plt.tick_params(axis='x', labelsize=12) 
 
 # Plot seasonal user
@@ -117,8 +117,8 @@ sns.barplot(
 ) 
 
 plt.title("Bicycle Rental Trends During Specific Seasons", loc="center", fontsize=15) 
-plt.ylabel(None) 
-plt.xlabel(None) 
+# plt.ylabel(None) 
+# plt.xlabel(None) 
 plt.tick_params(axis='x', labelsize=12)
 
 # Plot pengguna vs temperatur
@@ -129,12 +129,12 @@ sns.scatterplot(
     hue="season", 
 ) 
 
-plt.title(None) 
+# plt.title(None) 
 plt.xlabel("Temperature (C)")
 plt.ylabel("Trends")
 
 ## First tab layout 
-tab1, tab2, = st.tabs(["Weekly", "Monthly"])
+tab1, tab2 = st.tabs(["Weekly", "Monthly"])
 
 # tab pengguna mingguan
 with tab1:
@@ -160,5 +160,6 @@ with tab_b:
     st.pyplot(fig_temp)
 
 st.caption('Awaludin Ahmad Hafiz')
+
 
 
