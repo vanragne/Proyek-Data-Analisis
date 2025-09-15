@@ -89,14 +89,14 @@ fig_monthly = plt.figure(figsize=(10,5))
 sns.lineplot( 
     x="month",
     y="count",  
-    data=day_df, 
+    data=main_df, 
     hue="year", 
     marker="o"
 ) 
 
 plt.title("Monthly Bike Usage per Year", loc="center", fontsize=15) 
 plt.ylabel("Bike Count") 
-# plt.xlabel(None) 
+plt.xlabel("") 
 plt.xticks(rotation=45) 
 plt.tick_params(axis='x', labelsize=12) 
 
@@ -105,7 +105,7 @@ fig_weekly = plt.figure(figsize=(10,5))
 sns.boxplot(
     x="weekday",
     y="count",  
-    data=day_df, 
+    data=main_df, 
     hue="year" 
 ) 
 
@@ -118,7 +118,7 @@ plt.tick_params(axis='x', labelsize=12)
 fig_season = plt.figure(figsize=(10,5)) 
 sns.barplot( 
     x="season", y="count", 
-    data=day_df, 
+    data=main_df, 
     hue="year", 
 ) 
 
@@ -131,7 +131,7 @@ plt.tick_params(axis='x', labelsize=12)
 fig_temp = plt.figure(figsize=(10,6)) 
 sns.scatterplot( 
     x="temp", y="count", 
-    data=day_df, 
+    data=main_df, 
     hue="season", 
 ) 
 
@@ -166,6 +166,7 @@ with tab_b:
     st.pyplot(fig_temp)
 
 st.caption('Awaludin Ahmad Hafiz')
+
 
 
 
