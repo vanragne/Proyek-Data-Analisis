@@ -6,8 +6,14 @@ import seaborn as sns
 import streamlit as st
 import plotly.express as px
 
-sns.set(style='dark')
+# Global theme
+sns.set(style="dark")
+sns.set_palette("Set2")
 
+px.defaults.template = "plotly_dark"
+px.defaults.color_discrete_sequence = px.colors.qualitative.Set2
+
+# Choose file path
 script_dir = os.path.dirname(os.path.abspath(__file__))
 filename = os.path.join(script_dir, "day_data.csv")
 
@@ -104,8 +110,8 @@ sns.boxplot(
 ) 
 
 plt.title("Bicycle Rental Trends During Specific Days", loc="center", fontsize=15) 
-# plt.ylabel(None) 
-# plt.xlabel(None) 
+plt.ylabel("") 
+plt.xlabel("") 
 plt.tick_params(axis='x', labelsize=12) 
 
 # Plot seasonal user
@@ -117,8 +123,8 @@ sns.barplot(
 ) 
 
 plt.title("Bicycle Rental Trends During Specific Seasons", loc="center", fontsize=15) 
-# plt.ylabel(None) 
-# plt.xlabel(None) 
+plt.ylabel("") 
+plt.xlabel("") 
 plt.tick_params(axis='x', labelsize=12)
 
 # Plot pengguna vs temperatur
@@ -160,6 +166,7 @@ with tab_b:
     st.pyplot(fig_temp)
 
 st.caption('Awaludin Ahmad Hafiz')
+
 
 
 
