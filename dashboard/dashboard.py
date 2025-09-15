@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import streamlit as st
+import plotly.express as px
 
 sns.set(style='dark')
 
@@ -24,11 +25,11 @@ def create_daily_users_df(df):
     return daily_users_df
 
 def create_sum_weekly_user_df(df):
-    sum_weekly_user_df = df.groupby("count").weekday.sum().sort_values(ascending=False).reset_index()
+    sum_weekly_user_df = df.groupby("weekday")["count"].sum().reset_index()
     return sum_weekly_user_df
 
 def create_sum_monthly_user_df(df):
-    sum_monthly_user_df = df.groupby("count").month.sum().sort_values(ascending=False).reset_index()
+    sum_monthly_user_df = df.groupby("month")["count"].sum().reset_index()
     return sum_monthly_user_df
 
 
@@ -60,107 +61,99 @@ main_df = day_df[(day_df["date"] >= str(start_date)) &
                 (day_df["date"] <= str(end_date))]
 
 
-# # Menyiapkan berbagai dataframe
+## Menyiapkan berbagai dataframe
 daily_users_df = create_daily_users_df(main_df)
 sum_weekly_user_df = create_sum_weekly_user_df(main_df)
 sum_monthly_user_df = create_sum_monthly_user_df(main_df)
 
-
-# plot number of daily users
 st.header('Bike Sharing Data')
-st.subheader('Daily Report')
 
-col1, col2 = st.columns(2)
-
-with col1:
-    total_orders = daily_users_df.order_count.sum()
-    st.metric("Total users", value=total_orders)
-
-with col2:
-    total_bike = daily_users_df.bike.sum() 
-    st.metric("Total Bike has been used", value=total_bike)
-
-fig, ax = plt.subplots(figsize=(16, 8))
-ax.plot(
-    daily_users_df["date"],
-    daily_users_df["bike"],
-    linewidth=2,
-    color="blue"
-)
-ax.tick_params(axis='y', labelsize=20)
-ax.tick_params(axis='x', labelsize=15)
-
-st.pyplot(fig)
-
-
-# untuk menampilkan pengguna musiman
-st.subheader("Seasonal User")
-
-fig_season = plt.figure(figsize=(10,5))
-
-sns.barplot(
-    y="count",
-    x="season",
-    data=day_df,
-    hue="year",
+# Menampilkan Pengguna harian
+st.subheader('Daily Bike Usage (Interactive)')
+fig_daily = px.line(
+    daily_users_df,
+    x="date", y="bike",
+    title="Daily Bike Usage",
+    labels={"bike": "Number of Bikes", "date": "Date"}
 )
 
-plt.title("Tren Peminjaman Sepeda pada Musim Tertentu", loc="center", fontsize=15)
-plt.ylabel(None)
-plt.xlabel("Musim")
+st.plotly_chart(fig_daily, use_container_width=True)
+
+# Plot pengguna musiman
+fig_season = plt.figure(figsize=(10,5)) 
+sns.barplot( 
+    x="season", y="count", 
+    data=day_df, 
+    hue="year", 
+) 
+
+plt.title("Tren Peminjaman Sepeda pada Musim Tertentu", loc="center", fontsize=15) 
+plt.ylabel(None) 
+plt.xlabel("Musim") 
 plt.tick_params(axis='x', labelsize=12)
 
-st.pyplot(fig_season)
+# Plot pengguna vs temperatur
+fig_temp = plt.figure(figsize=(10,6)) 
+sns.scatterplot( 
+    x="tempt", y="count", 
+    data=day_df, 
+    hue="season", 
+) 
 
-# pengguna musiman + temp
-fig_temp = plt.figure(figsize=(10,6))
+plt.title(None) 
+plt.xlabel("Temperature (C)")
+plt.ylabel("Tren Peminjaman")  
 
-sns.scatterplot(x='temp', y='count', data=day_df, hue='season')
-
-plt.xlabel("Temperatur (C)")
-plt.ylabel("Tren Peminjaman")
-plt.title(None)
-plt.tight_layout()
-
-st.pyplot(fig_temp)
-
-# menampilkan pengguna mingguan
-st.subheader("Weekly User")
-
-fig_weekly = plt.figure(figsize=(10,5))
-
-sns.boxplot(
-    y="count",
-    x="weekday",
-    data=day_df,
-    hue="year"
-)
-
-plt.title("Tren Peminjaman Sepeda pada Hari tertentu", loc="center", fontsize=15)
-plt.ylabel(None)
-plt.xlabel(None)
-plt.tick_params(axis='x', labelsize=12)
-
-st.pyplot(fig_weekly)
-
-# menampilkan pengguna bulanan
-st.subheader("Monthly User")
-
-fig_monthly = plt.figure(figsize=(10,5))
-
-sns.barplot(
-    y="count",
+# Plot pengguna bulanan
+fig_monthly = plt.figure(figsize=(10,5)) 
+sns.barplot( 
     x="month",
-    data=day_df,
-    hue="year",
-)
+    y="count",  
+    data=day_df, 
+    hue="year", 
+) 
 
-plt.title("Tren Peminjaman Sepeda pada Bulan tertentu", loc="center", fontsize=15)
-plt.ylabel(None)
-plt.xlabel("Hari")
-plt.xticks(rotation=45)
-plt.tick_params(axis='x', labelsize=12)
+plt.title("Tren Peminjaman Sepeda pada Bulan tertentu", loc="center", fontsize=15) 
+plt.ylabel(None) 
+plt.xlabel("Bulan") 
+plt.xticks(rotation=45) 
+plt.tick_params(axis='x', labelsize=12) 
 
-st.pyplot(fig_monthly)
+# Plot pengguna mingguan 
+fig_weekly = plt.figure(figsize=(10,5)) 
+sns.boxplot(
+    x="weekday",
+    y="count",  
+    data=day_df, 
+    hue="year" 
+) 
+
+plt.title("Tren Peminjaman Sepeda pada Hari tertentu", loc="center", fontsize=15) 
+plt.ylabel(None) 
+plt.xlabel("Bulan") 
+plt.tick_params(axis='x', labelsize=12) 
+
+## Tab layout 
+tab1, tab2, tab3, tab4 = st.tabs(["Seasonal", "Temp Relation", "Weekly", "Monthly"])
+
+# tab pengguna musiman
+with tab1:
+    st.subheader("Seasonal User")
+    st.pyplot(fig_season)
+
+# tab pengguna vs temperatur
+with tab2:
+    st.subheader("User vs Temp")
+    st.pyplot(fig_temp)
+
+# tab pengguna mingguan
+with tab3:
+    st.subheader("Weekly User")
+    st.pyplot(fig_weekly)
+
+# tab pengguna bulanan
+with tab4:
+    st.subheader("Monthly User")
+    st.pyplot(fig_monthly)
 
 st.caption('Awaludin Ahmad Hafiz')
