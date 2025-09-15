@@ -32,7 +32,6 @@ def create_sum_monthly_user_df(df):
     sum_monthly_user_df = df.groupby("month")["count"].sum().reset_index()
     return sum_monthly_user_df
 
-
 # Load cleaned data
 day_df = pd.read_csv(filename)
 
@@ -43,13 +42,13 @@ day_df.reset_index(inplace=True)
 for column in datetime_columns:
     day_df[column] = pd.to_datetime(day_df[column])
 
-# Filter data
+# Filtering data
 min_date = day_df["date"].min()
 max_date = day_df["date"].max()
 
 with st.sidebar:
 
-    # Mengambil start_date & end_date dari date_input
+    # add start_date & end_date from date_input
     start_date, end_date = st.date_input(
         label='Rentang Waktu',
         min_value=min_date,
@@ -61,61 +60,37 @@ main_df = day_df[(day_df["date"] >= str(start_date)) &
                 (day_df["date"] <= str(end_date))]
 
 
-## Menyiapkan berbagai dataframe
+## Create dataframe
 daily_users_df = create_daily_users_df(main_df)
 sum_weekly_user_df = create_sum_weekly_user_df(main_df)
 sum_monthly_user_df = create_sum_monthly_user_df(main_df)
 
 st.header('Bike Sharing Data')
 
-# Menampilkan Pengguna harian
+# Plot daily user
 st.subheader('Daily Bike Usage (Interactive)')
 fig_daily = px.line(
     daily_users_df,
     x="date", y="bike",
     title="Daily Bike Usage",
-    labels={"bike": "Number of Bikes", "date": "Date"}
+    labels={"bike": "Number of Bikes", "date": None}
 )
 
 st.plotly_chart(fig_daily, use_container_width=True)
 
-# Plot pengguna musiman
-fig_season = plt.figure(figsize=(10,5)) 
-sns.barplot( 
-    x="season", y="count", 
-    data=day_df, 
-    hue="year", 
-) 
-
-plt.title("Tren Peminjaman Sepeda pada Musim Tertentu", loc="center", fontsize=15) 
-plt.ylabel(None) 
-plt.xlabel("Musim") 
-plt.tick_params(axis='x', labelsize=12)
-
-# Plot pengguna vs temperatur
-fig_temp = plt.figure(figsize=(10,6)) 
-sns.scatterplot( 
-    x="temp", y="count", 
-    data=day_df, 
-    hue="season", 
-) 
-
-plt.title(None) 
-plt.xlabel("Temperature (C)")
-plt.ylabel("Tren Peminjaman")  
-
-# Plot pengguna bulanan
+# Plot monthly user
 fig_monthly = plt.figure(figsize=(10,5)) 
-sns.barplot( 
+sns.lineplot( 
     x="month",
     y="count",  
     data=day_df, 
     hue="year", 
+    marker="o"
 ) 
 
-plt.title("Tren Peminjaman Sepeda pada Bulan tertentu", loc="center", fontsize=15) 
-plt.ylabel(None) 
-plt.xlabel("Bulan") 
+plt.title("Monthly Bike Usage per Year", loc="center", fontsize=15) 
+plt.ylabel("Bike Count") 
+plt.xlabel(None) 
 plt.xticks(rotation=45) 
 plt.tick_params(axis='x', labelsize=12) 
 
@@ -128,33 +103,62 @@ sns.boxplot(
     hue="year" 
 ) 
 
-plt.title("Tren Peminjaman Sepeda pada Hari tertentu", loc="center", fontsize=15) 
+plt.title("Bicycle Rental Trends During Specific Days", loc="center", fontsize=15) 
 plt.ylabel(None) 
-plt.xlabel("Bulan") 
+plt.xlabel(None) 
 plt.tick_params(axis='x', labelsize=12) 
 
-## Tab layout 
-tab1, tab2, tab3, tab4 = st.tabs(["Seasonal", "Temp Relation", "Weekly", "Monthly"])
+# Plot seasonal user
+fig_season = plt.figure(figsize=(10,5)) 
+sns.barplot( 
+    x="season", y="count", 
+    data=day_df, 
+    hue="year", 
+) 
 
-# tab pengguna musiman
-with tab1:
-    st.subheader("Seasonal User")
-    st.pyplot(fig_season)
+plt.title("Bicycle Rental Trends During Specific Seasons", loc="center", fontsize=15) 
+plt.ylabel(None) 
+plt.xlabel(None) 
+plt.tick_params(axis='x', labelsize=12)
 
-# tab pengguna vs temperatur
-with tab2:
-    st.subheader("User vs Temp")
-    st.pyplot(fig_temp)
+# Plot pengguna vs temperatur
+fig_temp = plt.figure(figsize=(10,6)) 
+sns.scatterplot( 
+    x="temp", y="count", 
+    data=day_df, 
+    hue="season", 
+) 
+
+plt.title(None) 
+plt.xlabel("Temperature (C)")
+plt.ylabel("Trends")
+
+## First tab layout 
+tab1, tab2, = st.tabs(["Weekly", "Monthly"])
 
 # tab pengguna mingguan
-with tab3:
+with tab1:
     st.subheader("Weekly User")
     st.pyplot(fig_weekly)
 
 # tab pengguna bulanan
-with tab4:
+with tab2:
     st.subheader("Monthly User")
     st.pyplot(fig_monthly)
+    
+## Second tab layout 
+tab_a, tab_b = st.tabs(["Seasonal", "Temp Relation"])
+
+# tab seasonal user
+with tab_a:
+    st.subheader("Seasonal User")
+    st.pyplot(fig_season)
+
+# tab user vs temp
+with tab_b:
+    st.subheader("User vs Temp")
+    st.pyplot(fig_temp)
 
 st.caption('Awaludin Ahmad Hafiz')
+
 
