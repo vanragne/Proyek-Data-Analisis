@@ -170,7 +170,7 @@ tab_w1, tab_w2 = st.tabs(["Scatter", "Correlation"])
 
 # Scatterplots: windspeed & humidity vs count
 with tab_w1:
-    st.subheader("Weather vs Bike Usage (Scatter)")
+    st.subheader("Weather vs Bike Usage")
     fig_scatter, ax = plt.subplots(1, 2, figsize=(14,5))
 
     sns.scatterplot(x="windspeed", y="count", data=main_df, hue="season", ax=ax[0])
@@ -184,13 +184,14 @@ with tab_w1:
 # Correlation heatmap
 with tab_w2:
     st.subheader("Correlation Heatmap")
-    corr = main_df[["temp", "atemp", "hum", "windspeed", "count"]].corr()
+    corr = main_df[["temp", "hum", "windspeed", "count"]].corr()
     fig_corr, ax = plt.subplots(figsize=(6,5))
     sns.heatmap(corr, annot=True, cmap="coolwarm", center=0, ax=ax)
     ax.set_title("Correlation between Weather & Usage")
     st.pyplot(fig_corr)
 
 st.caption('Awaludin Ahmad Hafiz')
+
 
 
 
